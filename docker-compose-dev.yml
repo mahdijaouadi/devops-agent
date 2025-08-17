@@ -1,0 +1,17 @@
+version: "3.8"
+
+services:
+  devops-agent:
+    image: devops-agent
+    build:
+      context: .
+      dockerfile: Dockerfile
+      args:
+        GITHUBAPP_USER_NAME: ${GITHUBAPP_USER_NAME}
+        GITHUBAPP_USER_EMAIL: ${GITHUBAPP_USER_EMAIL}
+    ports:
+      - "8000:8000"
+    container_name: devops-agent
+    environment:
+      - GITHUBAPP_USER_NAME=${GITHUBAPP_USER_NAME}
+      - GITHUBAPP_USER_EMAIL=${GITHUBAPP_USER_EMAIL}
