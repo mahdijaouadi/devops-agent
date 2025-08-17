@@ -16,6 +16,7 @@ logger = logging.getLogger(__name__)
 
 
 
+current_dir=os.path.dirname(os.path.abspath(__file__))
 
 def clone_repository(repo_url: str,branch: str,state: Annotated[dict, InjectedState]):
     """
@@ -60,7 +61,6 @@ def clone_repository(repo_url: str,branch: str,state: Annotated[dict, InjectedSt
             jwt_token = get_jwt(state['githubapp_privatekey'], state['githubapp_id'])
             install_token = get_installation_token(jwt_token, githubapp_installation_id)
 
-            current_dir=os.path.dirname(os.path.abspath(__file__))
             repo_url = repo_url.replace("https://", f"https://x_access-token:{install_token}@")
             command=f'cd .. && cd tmp && cd {state["session_id"]} && cd codebase && git clone --branch {branch} {repo_url}'
             result1 = subprocess.run(
@@ -86,7 +86,7 @@ def clone_repository(repo_url: str,branch: str,state: Annotated[dict, InjectedSt
             return Command(
             update={
                 "session_repositories": state.get("session_repositories", []) + [{"repository_name":repo_name,"agent_branch":agent_branch}],
-                "messages": [ToolMessage(content={"success": f"Repository {repo_name} cloned successfully and branch {agent_branch} checked out."}, tool_call_id=state['messages'][-1].tool_calls[0]['id'])]
+                "executor_messages": [ToolMessage(content={"success": f"Repository {repo_name} cloned successfully and branch {agent_branch} checked out."}, tool_call_id=state['executor_messages'][-1].tool_calls[0]['id'])]
             }
             )
         else:

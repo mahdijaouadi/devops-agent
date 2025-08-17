@@ -57,6 +57,8 @@ def root():
 @app.post("/chat", response_model=ChatBackgroundResponse)
 def chat(request: ChatRequest):
     try:
+        local_base = os.path.abspath(os.path.join(current_dir, "tmp", request.session_id, "codebase"))
+        os.makedirs(local_base, exist_ok=True)
         logger.info("Workflow endpoint called")
         work_flow = WorkFlow(request=request)
         work_flow(request=request)

@@ -53,7 +53,7 @@ class Nodes():
     def initiate_state(self,state):
         logger.info('entering initial state')
         ## save sa_key
-        download_save_sakey(state["sa_key_bucket_link"],session_id=state["session_id"])
+        # download_save_sakey(state["sa_key_bucket_link"],session_id=state["session_id"])
         return {}
     def router(self, state):
         """
